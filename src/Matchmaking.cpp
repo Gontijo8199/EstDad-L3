@@ -1,16 +1,33 @@
 #include "Matchmaking.hpp"
 
-Matchmaking::Matchmaking(){};
-Matchmaking::~Matchmaking(){};
+Matchmaking::Matchmaking(){
+    this->size = 0;
+}
 
-bool Matchmaking::insert(Player player){};
-bool Matchmaking::removePlayer(int id){};
+Matchmaking::~Matchmaking(){
+    delete[] this->players;
+}
 
-void Matchmaking::sortByScoreInsertion(){};
-void Matchmaking::sortByScoreMerge(){};
+bool Matchmaking::insert(Player player){
+    if (this->size == MAX_PLAYERS)
+        return 0;
+    
+    this->players[this->size] = player;
+    this->size++;
 
-Player* Matchmaking::formGroup(int groupSize, int delta, int* n){};
+    return 1;
+}
+bool Matchmaking::removePlayer(int id){
+}
 
-Player* Matchmaking::getWaitingPlayers(int* n){};
+void Matchmaking::sortByScoreInsertion(){}
+void Matchmaking::sortByScoreMerge(){}
 
-void Matchmaking::printWaitingPlayers(){};
+Player* Matchmaking::formGroup(int groupSize, int delta, int* n){}
+
+Player* Matchmaking::getWaitingPlayers(int* n){
+    *n = this->size;
+    return this->players;
+}
+
+void Matchmaking::printWaitingPlayers(){}
