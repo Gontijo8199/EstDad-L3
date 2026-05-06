@@ -1,4 +1,5 @@
 #include "Matchmaking.hpp"
+#include<iostream>
 
 Matchmaking::Matchmaking(){
     this->size = 0;
@@ -10,14 +11,26 @@ Matchmaking::~Matchmaking(){
 
 bool Matchmaking::insert(Player player){
     if (this->size == MAX_PLAYERS)
-        return 0;
+        return false;
     
     this->players[this->size] = player;
     this->size++;
 
-    return 1;
+    return true;
 }
 bool Matchmaking::removePlayer(int id){
+
+    for (int i = 0; i < this->size; i++) {
+        if (this->players[i].getId() == id) {
+            for (int j = i; j < this->size - 1; j++) {
+                this->players[j] = this->players[j + 1];
+            }
+            this->size--;
+            return true;
+        }
+    }
+
+    return false;
 }
 
 void Matchmaking::sortByScoreInsertion(){}
@@ -30,4 +43,11 @@ Player* Matchmaking::getWaitingPlayers(int* n){
     return this->players;
 }
 
-void Matchmaking::printWaitingPlayers(){}
+void Matchmaking::printWaitingPlayers(){
+    Player* p = nullptr;
+    std::cout << "Waiting Players:" << std::endl;
+    for (int i = 0; i<this->size; i++){
+        p = &this->players[i];
+        std::cout << "[" << p->getId() << " | " << p->getName() << " | " << p->getScore() <<  " | " << p->getTimestamp() << " ]" << std::endl; 
+    }
+}
