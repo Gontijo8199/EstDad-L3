@@ -21,6 +21,7 @@ public:
 
     void sortByScoreInsertion();
     void sortByScoreMerge();
+    void sortByScoreMerge(int low_bound, int up_bound);
 
     Player* formGroup(int groupSize, int delta, int* n);
 
