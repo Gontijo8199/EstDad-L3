@@ -38,9 +38,13 @@ void Matchmaking::sortByScoreInsertion(){
     int sorted_size = 1;
     for (int i=1; i<this->size; i++) {
         for (int j=i; j>0; j--) {
-            if (this->players[j-1].getScore() >= this->players[j].getScore())
+            if (this->players[j-1].getScore() > this->players[j].getScore())
                 continue; // como a parte esquerda da lista estava ordenada, basta colocaro novo na posição certa
 
+            if ((this->players[j-1].getScore() == this->players[j].getScore()) 
+                && (this->players[j-1].getTimestamp() >= this->players[j].getTimestamp()))
+                continue; // critério de desempate
+            
             temp = this->players[j-1];
             this->players[j-1] = this->players[j];
             this->players[j] = temp;
@@ -49,10 +53,10 @@ void Matchmaking::sortByScoreInsertion(){
 }
 
 void Matchmaking::sortByScoreMerge(int low_bound, int up_bound) {
-    if (up_bound - low_bound == 0) 
+    if (up_bound - low_bound <= 0) 
         return;
 
-    int mid = (low_bound + up_bound) / 2;
+    int mid = (low_bound + up_bound) / 2; // arredonda para baixo
     this->sortByScoreMerge(low_bound, mid);
     this->sortByScoreMerge(mid + 1, up_bound);
 
@@ -61,22 +65,29 @@ void Matchmaking::sortByScoreMerge(int low_bound, int up_bound) {
     int j = mid + 1;
 
     Player newSegment[size];
-    int t;
     for (int k=0; k<size && i<=mid && j<=up_bound; k++) {
         if (this->players[i].getScore() < this->players[j].getScore()) {
             newSegment[k] = this->players[i];
-            t = i;
             i++;
         }
-        else {
+        else if (this->players[i].getScore() > this->players[j].getScore()) {
             newSegment[k] = this->players[j];
-            t = j;
             j++;
+        }
+        else { // empate
+            if (this->players[i].getTimestamp() < this->players[j].getTimestamp()) {
+                newSegment[k] = this->players[i];
+                i++;
+            }
+            else {
+                newSegment[k] = this->players[j];
+                j++;
+            }
         }
     }
 
     // sempre termina uma sub lista antes da outra
-    int end;
+    int t, end;
     if (i > mid) {
         t = j;
         end = up_bound;
@@ -94,10 +105,17 @@ void Matchmaking::sortByScoreMerge(int low_bound, int up_bound) {
 }
 
 void Matchmaking::sortByScoreMerge(){
-    this->sortByScoreMerge(0, this->size);
+    this->sortByScoreMerge(0, this->size - 1);
 }
 
-Player* Matchmaking::formGroup(int groupSize, int delta, int* n){}
+Player* Matchmaking::formGroup(int groupSize, int delta, int* n){
+    Player grupo[groupSize]; 
+    for (int i=0; i<this->size - groupSize; i++) {
+        if (this->players[i+groupSize].getScore() - this->players[i].getScore() < delta) {
+            int maxScore = this->players[i+groupSize].getScore();
+        }
+    }
+}
 
 Player* Matchmaking::getWaitingPlayers(int* n){
     *n = this->size;
