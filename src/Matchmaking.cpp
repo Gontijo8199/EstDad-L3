@@ -5,9 +5,7 @@ Matchmaking::Matchmaking(){
     this->size = 0;
 }
 
-Matchmaking::~Matchmaking(){
-    delete[] this->players;
-}
+Matchmaking::~Matchmaking(){}
 
 bool Matchmaking::insert(Player player){
     if (this->size == MAX_PLAYERS)
@@ -104,11 +102,40 @@ Player* Matchmaking::getWaitingPlayers(int* n){
     return this->players;
 }
 
+using namespace std;
+
+void printPadded(const string& s, int width) {
+    cout << s;
+    for (int i = s.size(); i < width; i++)
+        cout << ' ';
+}
+
 void Matchmaking::printWaitingPlayers(){
     Player* p = nullptr;
+
+    int wId = 2, wName = 4, wScore = 5, wTime = 1;
+    for (int i = 0; i < this->size; i++) {
+        p = &this->players[i];
+        wId    = max(wId,    (int) to_string(p->getId()).size());
+        wName  = max(wName,  (int) p->getName().size());
+        wScore = max(wScore, (int) to_string(p->getScore()).size());
+        wTime  = max(wTime,  (int) to_string(p->getTimestamp()).size());
+    }
+
     std::cout << "Waiting Players:" << std::endl;
+
     for (int i = 0; i<this->size; i++){
         p = &this->players[i];
-        std::cout << "[" << p->getId() << " | " << p->getName() << " | " << p->getScore() <<  " | " << p->getTimestamp() << " ]" << std::endl; 
+
+        cout << "[ ";
+        printPadded(to_string(p->getId()), wId);
+        cout << " | ";
+        printPadded(p->getName(), wName);
+        cout << " | ";
+        printPadded(to_string(p->getScore()), wScore); 
+        cout << " | ";
+        printPadded(to_string(p->getTimestamp()), wTime); 
+        cout << " ]" << endl;
+
     }
 }
