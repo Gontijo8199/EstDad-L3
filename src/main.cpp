@@ -74,6 +74,7 @@ int main(){
 
     cout << "\nTestando grupo válido (size=3, delta=50)..." << endl;
 
+    game->sortByScoreMerge();
     int size;
     Player* grupo = game->formGroup(3, 50, &size);
     game->printArrayPlayers(grupo, size, "Grupo removido");
@@ -89,6 +90,7 @@ int main(){
 
     cout << "\nTestando grupo inválido (size=4, delta=20)..." << endl;
 
+    game->sortByScoreMerge();
     grupo = game->formGroup(4, 20, &size);
     game->printArrayPlayers(grupo, size, "Grupo removido");
     delete[] grupo;

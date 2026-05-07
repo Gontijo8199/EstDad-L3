@@ -62,7 +62,7 @@ void Matchmaking::sortByScoreMerge(int low_bound, int up_bound) {
     int i = low_bound;
     int j = mid + 1;
 
-    Player newSegment[size];
+    Player* newSegment = new Player[size];
     int k=0;
     for (; k<size && i<=mid && j<=up_bound; k++) {
         if (this->players[i].getScore() < this->players[j].getScore()) {
@@ -93,6 +93,8 @@ void Matchmaking::sortByScoreMerge(int low_bound, int up_bound) {
     
     for (k=0; k<size; k++) 
         this->players[low_bound + k] = newSegment[k];
+
+    delete[] newSegment;
 }
 
 void Matchmaking::sortByScoreMerge(){
@@ -107,12 +109,11 @@ Player* Matchmaking::formGroup(int groupSize, int delta, int* n) {
         *n = 0; 
         return nullptr;
     }
-
-    this->sortByScoreMerge(); 
     
-    Player* grupo = new Player[groupSize]; 
-    for (int i=0; i<(this->size - groupSize); i++) 
+    for (int i=0; i<=(this->size - groupSize); i++) 
         if (this->players[i+groupSize-1].getScore() - this->players[i].getScore() <= delta) {
+            Player* grupo = new Player[groupSize]; 
+
             for (int j=0; j<groupSize; j++) 
                 grupo[j] = this->players[i+j];
 
@@ -151,6 +152,11 @@ void printPadded(const string& s, int width) {
 }
 
 void Matchmaking::printWaitingPlayers(){
+    if (this->size == 0) {
+        cout << "(empty)\n";
+        return;
+    }
+
     Player* p = nullptr;
 
     int wId = 2, wName = 4, wScore = 5, wTime = 1;
@@ -176,12 +182,16 @@ void Matchmaking::printWaitingPlayers(){
         cout << " | ";
         printPadded(to_string(p->getTimestamp()), wTime); 
         cout << " ]" << endl;
-
     }
 }
 
+void Matchmaking::printArrayPlayers(Player* player_array, int n, string title) {
+    if (player_array == nullptr) return;
+    if (n < 1) {
+        cout << "(empty)\n";
+        return;
+    }
 
-void Matchmaking::printArrayPlayers(Player* player_array, int n, string title){
     Player p;
 
     int wId = 2, wName = 4, wScore = 5, wTime = 1;
