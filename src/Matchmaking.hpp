@@ -28,8 +28,7 @@ public:
     Player* getWaitingPlayers(int* n);
 
     void printWaitingPlayers();
-
-    // Outros métodos auxiliares, se necessário
+    void printArrayPlayers(Player* player_array, int n, std::string title);
 };
 
 #endif

@@ -133,7 +133,7 @@ void Matchmaking::printWaitingPlayers(){
         wTime  = max(wTime,  (int) to_string(p->getTimestamp()).size());
     }
 
-    std::cout << "Waiting Players:" << std::endl;
+    cout << "Waiting Players:" << endl;
 
     for (int i = 0; i<this->size; i++){
         p = &this->players[i];
@@ -150,3 +150,34 @@ void Matchmaking::printWaitingPlayers(){
 
     }
 }
+
+
+void Matchmaking::printArrayPlayers(Player* player_array, int n, string title){
+    Player p;
+
+    int wId = 2, wName = 4, wScore = 5, wTime = 1;
+    for (int i = 0; i < n; i++) {
+        p = player_array[i];
+        wId    = max(wId,    (int) to_string(p.getId()).size());
+        wName  = max(wName,  (int) p.getName().size());
+        wScore = max(wScore, (int) to_string(p.getScore()).size());
+        wTime  = max(wTime,  (int) to_string(p.getTimestamp()).size());
+    }
+
+    cout << title << ":" << endl;
+
+    for (int i = 0; i<this->size; i++){
+        p = player_array[i];
+
+        cout << "[ ";
+        printPadded(to_string(p.getId()), wId);
+        cout << " | ";
+        printPadded(p.getName(), wName);
+        cout << " | ";
+        printPadded(to_string(p.getScore()), wScore); 
+        cout << " | ";
+        printPadded(to_string(p.getTimestamp()), wTime); 
+        cout << " ]" << endl;
+
+    }
+};

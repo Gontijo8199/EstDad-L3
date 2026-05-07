@@ -36,7 +36,6 @@ int main(){
 
     game->printWaitingPlayers();
 
-<<<<<<< HEAD
     cout << "Removendo usuário de ID=5..." << endl;
 
     game->removePlayer(5);
@@ -72,10 +71,6 @@ int main(){
 
     cout << "Fim dos testes..." << endl;
 
-=======
-    game->sortByScoreMerge();
-    game->printWaitingPlayers();
->>>>>>> 36c97a2d144ac20e261fe5c05cc110a341d88956
 
 
     return 0;
