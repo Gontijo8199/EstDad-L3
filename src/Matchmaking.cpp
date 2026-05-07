@@ -96,15 +96,23 @@ void Matchmaking::sortByScoreMerge(int low_bound, int up_bound) {
 }
 
 void Matchmaking::sortByScoreMerge(){
+    if (this->size == 0) return;
+
     this->sortByScoreMerge(0, this->size - 1);
 }
 
 Player* Matchmaking::formGroup(int groupSize, int delta, int* n) {
+    if (n == nullptr) return nullptr;
+    if (groupSize < 1 || delta < 0 || this->size < groupSize) {
+        *n = 0; 
+        return nullptr;
+    }
+
     this->sortByScoreMerge(); 
     
     Player* grupo = new Player[groupSize]; 
-    for (int i=0; i<this->size - groupSize; i++)
-        if (this->players[i+groupSize].getScore() - this->players[i].getScore() < delta) {
+    for (int i=0; i<(this->size - groupSize); i++) 
+        if (this->players[i+groupSize-1].getScore() - this->players[i].getScore() <= delta) {
             for (int j=0; j<groupSize; j++) 
                 grupo[j] = this->players[i+j];
 
@@ -120,8 +128,18 @@ Player* Matchmaking::formGroup(int groupSize, int delta, int* n) {
 }
 
 Player* Matchmaking::getWaitingPlayers(int* n){
+    if (n == nullptr) return nullptr;
+    if (this->size == 0) {
+        *n = 0;
+        return nullptr;
+    }
+
     *n = this->size;
-    return this->players;
+    Player* copy = new Player[*n];
+    for(int i=0; i<*n; i++) 
+        copy[i] = this->players[i];
+
+    return copy;
 }
 
 using namespace std;
@@ -177,7 +195,7 @@ void Matchmaking::printArrayPlayers(Player* player_array, int n, string title){
 
     cout << title << ":" << endl;
 
-    for (int i = 0; i<this->size; i++){
+    for (int i = 0; i<n; i++){
         p = player_array[i];
 
         cout << "[ ";

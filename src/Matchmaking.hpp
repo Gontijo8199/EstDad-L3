@@ -10,6 +10,7 @@ private:
 
     Player players[MAX_PLAYERS];
     int size;
+    void sortByScoreMerge(int low_bound, int up_bound);
 
 public:
 
@@ -21,7 +22,6 @@ public:
 
     void sortByScoreInsertion();
     void sortByScoreMerge();
-    void sortByScoreMerge(int low_bound, int up_bound);
 
     Player* formGroup(int groupSize, int delta, int* n);
 
