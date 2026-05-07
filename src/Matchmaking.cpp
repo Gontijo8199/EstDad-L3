@@ -36,11 +36,11 @@ void Matchmaking::sortByScoreInsertion(){
     int sorted_size = 1;
     for (int i=1; i<this->size; i++) {
         for (int j=i; j>0; j--) {
-            if (this->players[j-1].getScore() > this->players[j].getScore())
+            if (this->players[j-1].getScore() < this->players[j].getScore())
                 continue; // como a parte esquerda da lista estava ordenada, basta colocaro novo na posição certa
 
             if ((this->players[j-1].getScore() == this->players[j].getScore()) 
-                && (this->players[j-1].getTimestamp() >= this->players[j].getTimestamp()))
+                && (this->players[j-1].getTimestamp() <= this->players[j].getTimestamp()))
                 continue; // critério de desempate
             
             temp = this->players[j-1];
@@ -99,13 +99,24 @@ void Matchmaking::sortByScoreMerge(){
     this->sortByScoreMerge(0, this->size - 1);
 }
 
-Player* Matchmaking::formGroup(int groupSize, int delta, int* n){
-    Player grupo[groupSize]; 
-    for (int i=0; i<this->size - groupSize; i++) {
+Player* Matchmaking::formGroup(int groupSize, int delta, int* n) {
+    this->sortByScoreMerge(); 
+    
+    Player* grupo = new Player[groupSize]; 
+    for (int i=0; i<this->size - groupSize; i++)
         if (this->players[i+groupSize].getScore() - this->players[i].getScore() < delta) {
-            int maxScore = this->players[i+groupSize].getScore();
+            for (int j=0; j<groupSize; j++) 
+                grupo[j] = this->players[i+j];
+
+            for (int j=0; j<groupSize; j++) 
+                this->removePlayer(this->players[i].getId());
+
+            *n = groupSize;
+            return grupo;
         }
-    }
+
+    *n = 0;
+    return nullptr;
 }
 
 Player* Matchmaking::getWaitingPlayers(int* n){
