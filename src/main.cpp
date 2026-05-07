@@ -33,50 +33,70 @@ int main(){
     game->insert(*p4);
     game->insert(*p5);
 
+    cout << "\nSalvando um backup_players..." << endl;
+
+    int n;
+    Player* backup_players = game->getWaitingPlayers(&n);
 
     game->printWaitingPlayers();
 
-<<<<<<< HEAD
-    cout << "Removendo usuário de ID=5..." << endl;
+    cout << "\nRemovendo usuário de ID=5..." << endl;
 
     game->removePlayer(5);
+    game->printWaitingPlayers();
 
-    cout << "Ordenando por Insertion e por Merge..." << endl;
+    game = new Matchmaking();
+    for (int i = 0; i < n; i++)
+        game->insert(backup_players[i]);
+    
+    cout << "\nOrdenando por Insertion e por Merge..." << endl;
 
-    Matchmaking* game_clone = game;
-
-    cout << "Insertion: (resultado)" << endl;
+    cout << "\n\tInsertion: (resultado)" << endl;
 
     game->sortByScoreInsertion();
     game->printWaitingPlayers();
 
-    cout << "Merge: (resultado)" << endl;
-
-    game_clone->sortByScoreMerge();
-    game->printWaitingPlayers();
-
-    // TODO: Adicionar teste de grupo
-    
-    int n;
-    Player* backup_players = game->getWaitingPlayers(&n);
-
-    cout << "Criando jogo com backup_players..." << endl;
-
-    Matchmaking* game_backup = new Matchmaking();
-
+    game = new Matchmaking();
     for (int i = 0; i < n; i++)
-        game_backup->insert(backup_players[i]);
-    
-    game_backup->printWaitingPlayers();
+        game->insert(backup_players[i]);
 
+    cout << "\n\tMerge: (resultado)" << endl;
 
-    cout << "Fim dos testes..." << endl;
-
-=======
     game->sortByScoreMerge();
     game->printWaitingPlayers();
->>>>>>> 36c97a2d144ac20e261fe5c05cc110a341d88956
+    
+    game = new Matchmaking();
+    for (int i = 0; i < n; i++)
+        game->insert(backup_players[i]);
 
+    cout << "\nTestando grupo válido (size=3, delta=20)..." << endl;
+
+    int size;
+    game->formGroup(3, 20, &size);
+    cout << "Grupo removiodc:" << endl;
+    cout << "Tamanho: " << size << endl;
+    // printar grupo;
+    cout << "Nova lista de espera: " << endl;
+    game->getWaitingPlayers(&size);
+    
+    game = new Matchmaking();
+    for (int i = 0; i < n; i++)
+        game->insert(backup_players[i]);
+
+    cout << "\nTestando grupo inválido (size=4, delta=20)..." << endl;
+
+    game->formGroup(4, 20, &size);
+    cout << "Grupo removiodc:" << endl;
+    cout << "Tamanho: " << size << endl;
+    // printar grupo;
+    cout << "Nova lista de espera: " << endl;
+    game->getWaitingPlayers(&size);
+    
+    game = new Matchmaking();
+    for (int i = 0; i < n; i++)
+        game->insert(backup_players[i]);
+
+    cout << "Fim dos testes..." << endl;
 
     return 0;
 }

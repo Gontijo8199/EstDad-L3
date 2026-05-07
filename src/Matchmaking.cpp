@@ -36,11 +36,11 @@ void Matchmaking::sortByScoreInsertion(){
     int sorted_size = 1;
     for (int i=1; i<this->size; i++) {
         for (int j=i; j>0; j--) {
-            if (this->players[j-1].getScore() > this->players[j].getScore())
+            if (this->players[j-1].getScore() < this->players[j].getScore())
                 continue; // como a parte esquerda da lista estava ordenada, basta colocaro novo na posição certa
 
             if ((this->players[j-1].getScore() == this->players[j].getScore()) 
-                && (this->players[j-1].getTimestamp() >= this->players[j].getTimestamp()))
+                && (this->players[j-1].getTimestamp() <= this->players[j].getTimestamp()))
                 continue; // critério de desempate
             
             temp = this->players[j-1];
