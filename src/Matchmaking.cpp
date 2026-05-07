@@ -63,7 +63,8 @@ void Matchmaking::sortByScoreMerge(int low_bound, int up_bound) {
     int j = mid + 1;
 
     Player newSegment[size];
-    for (int k=0; k<size && i<=mid && j<=up_bound; k++) {
+    int k=0;
+    for (; k<size && i<=mid && j<=up_bound; k++) {
         if (this->players[i].getScore() < this->players[j].getScore()) {
             newSegment[k] = this->players[i];
             i++;
@@ -85,20 +86,12 @@ void Matchmaking::sortByScoreMerge(int low_bound, int up_bound) {
     }
 
     // sempre termina uma sub lista antes da outra
-    int t, end;
-    if (i > mid) {
-        t = j;
-        end = up_bound;
-    }
-    else {
-        t = i;
-        end = mid;
-    }
-
-    for (int k=0; k+t<end; k++) 
-        newSegment[k] = this->players[k+t];
+    while (i<=mid)
+        newSegment[k++] = this->players[i++];
+    while (j<=up_bound)
+        newSegment[k++] = this->players[j++];
     
-    for (int k=0; k<size; k++) 
+    for (k=0; k<size; k++) 
         this->players[low_bound + k] = newSegment[k];
 }
 
