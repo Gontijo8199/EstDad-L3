@@ -40,11 +40,7 @@ int main(){
 
     game->printWaitingPlayers();
 
-<<<<<<< HEAD
-    cout << "Removendo usuário de ID=5..." << endl;
-=======
     cout << "\nRemovendo usuário de ID=5..." << endl;
->>>>>>> e1636f9d387b3adb275b1f73020c6d3e5f1e859d
 
     game->removePlayer(5);
     game->printWaitingPlayers();
@@ -102,10 +98,5 @@ int main(){
 
     cout << "Fim dos testes..." << endl;
 
-<<<<<<< HEAD
-
-
-=======
->>>>>>> e1636f9d387b3adb275b1f73020c6d3e5f1e859d
     return 0;
 }
