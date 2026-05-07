@@ -11,14 +11,15 @@ int main(){
     Matchmaking* game = new Matchmaking();
 
     game->insert(*p1);
-    game->insert(*p2);
     game->insert(*p3);
+    game->insert(*p2);
     game->insert(*p4);
     game->insert(*p5);
     
     game->printWaitingPlayers();
 
-
+    game->sortByScoreMerge();
+    game->printWaitingPlayers();
 
 
     return 0;
