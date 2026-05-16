@@ -86,6 +86,28 @@ void buscar_grupo(int n_players, int g_size, int delta) {
     return;
 }
 
+//verificação de getWaitingPlayers
+void teste_0(int n_players) {
+    cout << "\nGerando jogo com " << n_players << " jogadores ordenados\n";
+    Matchmaking* mm = gerar_jogo_ordenado(n_players);
+
+    cout << "Copiando lista...\n";
+    int n;
+    Player* wp = mm->getWaitingPlayers(&n);
+
+    cout << "Número de jogadores retornado: " << n << endl;
+    cout << "Deletando original e acessnado cópia...\n";
+
+    delete mm;
+    cout << "Nome | Timestamp\n";
+    for (int i=0; i<n; i++) {
+        cout << wp[i].getName() << " | " << wp[i].getTimestamp() << endl;
+    }
+
+    delete[] wp;
+    return;
+}
+
 //inserção ordenada
 void teste_1_1(int n_players) {
     cout << "\nGerando jogo com " << n_players << " jogadores ordenados\n";
@@ -184,6 +206,7 @@ void teste_4_2(int n_players) {
 
 int main(){
     int n_players = 10;
+    teste_0(n_players);
     teste_1_1(n_players);
     teste_1_2(n_players);
     teste_2_1(n_players);

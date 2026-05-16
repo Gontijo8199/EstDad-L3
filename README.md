@@ -53,12 +53,7 @@ O sistema está dividido nos seguintes arquivos:
 
 ## Estrutura de Dados
 
-A classe `Matchmaking` armazena os jogadores em um **array estático** de tamanho `MAX_PLAYERS = 100000`, acompanhado de um inteiro `size` que rastreia a quantidade atual de jogadores na fila.
-
-```cpp
-Player players[MAX_PLAYERS];
-int size;
-```
+A classe `Matchmaking` armazena os jogadores em um **array dinâmico** de tamanho `MAX_PLAYERS = 100000` para evitar stack overflow em casos de muitos usuários, acompanhado de um inteiro `size` que rastreia a quantidade atual de jogadores na fila.
 
 Essa abordagem garante acesso em tempo constante por índice e evita o uso de estruturas da STL, conforme exigido pelo enunciado.
 

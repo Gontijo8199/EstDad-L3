@@ -20,7 +20,6 @@ bool Matchmaking::insert(Player player){
     return true;
 }
 bool Matchmaking::removePlayer(int id){
-
     for (int i = 0; i < this->size; i++) {
         if (this->players[i].getId() == id) {
             for (int j = i; j < this->size - 1; j++) {
@@ -119,6 +118,7 @@ Player* Matchmaking::formGroup(int groupSize, int delta, int* n) {
             for (int j=0; j<groupSize; j++) 
                 grupo[j] = this->players[i+j];
 
+            // após remover um jogado, removePlayer coloca o próximo na posição dele 
             for (int j=0; j<groupSize; j++) 
                 this->removePlayer(this->players[i].getId());
 
