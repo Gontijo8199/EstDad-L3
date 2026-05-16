@@ -2,10 +2,13 @@
 #include<iostream>
 
 Matchmaking::Matchmaking(){
+    this->players = new Player[this->MAX_PLAYERS];
     this->size = 0;
 }
 
-Matchmaking::~Matchmaking(){}
+Matchmaking::~Matchmaking(){
+    delete[] this->players;
+}
 
 bool Matchmaking::insert(Player player){
     if (this->size == MAX_PLAYERS)
@@ -33,8 +36,7 @@ bool Matchmaking::removePlayer(int id){
 
 void Matchmaking::sortByScoreInsertion(){
     Player temp;
-    int sorted_size = 1;
-    for (int i=1; i<this->size; i++) {
+    for (int i=1; i<this->size; i++) {  
         for (int j=i; j>0; j--) {
             if (this->players[j-1].getScore() < this->players[j].getScore())
                 continue; // como a parte esquerda da lista estava ordenada, basta colocaro novo na posição certa

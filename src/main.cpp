@@ -81,6 +81,7 @@ void buscar_grupo(int n_players, int g_size, int delta) {
         mm->printArrayPlayers(gp, n, "Grupo encontrado");
     mm->printWaitingPlayers();
 
+    delete[] gp;
     delete mm;
     return;
 }
