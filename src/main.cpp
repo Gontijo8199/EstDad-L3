@@ -242,9 +242,11 @@ bool get_tempo_exec(int n_players, double* t_insert, double* t_merge) {
     if (n_players < 1 || t_insert == nullptr || t_merge == nullptr)
         return false;
 
+    // mesma seed para consistência dos testes
     random_device rd;
+    unsigned int seed = rd();
 
-    Matchmaking* mm = gerar_jogo_aleatorio(n_players, rd());
+    Matchmaking* mm = gerar_jogo_aleatorio(n_players, seed);
     auto start = chrono::steady_clock::now();
     mm->sortByScoreInsertion();
     auto end = chrono::steady_clock::now();
@@ -253,7 +255,7 @@ bool get_tempo_exec(int n_players, double* t_insert, double* t_merge) {
     *t_insert = elapsed.count();
     delete mm;
 
-    mm = gerar_jogo_aleatorio(n_players, rd());
+    mm = gerar_jogo_aleatorio(n_players, seed);
     start = chrono::steady_clock::now();
     mm->sortByScoreMerge();
     end = chrono::steady_clock::now();
