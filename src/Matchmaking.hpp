@@ -6,12 +6,12 @@
 class Matchmaking {
 
 private:
-    const int MAX_PLAYERS = 100000;
     Player* players;
     int size;
     void sortByScoreMerge(int low_bound, int up_bound);
 
 public:
+    static constexpr int MAX_PLAYERS = 100000;
 
     Matchmaking();
     ~Matchmaking();

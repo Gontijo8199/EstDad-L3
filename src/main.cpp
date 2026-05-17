@@ -1,6 +1,9 @@
 #include "Matchmaking.hpp"
 #include "Player.hpp"
 #include <iostream>
+#include <random>
+#include <chrono>
+#include <cmath>
 
 using namespace std;
 
@@ -204,8 +207,7 @@ void teste_4_2(int n_players) {
     return;
 }
 
-int main(){
-    int n_players = 10;
+void run_tests(int n_players) {
     teste_0(n_players);
     teste_1_1(n_players);
     teste_1_2(n_players);
@@ -215,6 +217,82 @@ int main(){
     teste_3_2(n_players);
     teste_4_1(n_players);
     teste_4_2(n_players);
+
+    return;
+}
+
+Matchmaking* gerar_jogo_aleatorio(int n_players, unsigned int seed) {
+    Matchmaking* mm = new Matchmaking();
+
+    mt19937 gen(seed);
+    uniform_int_distribution<> dist(1, n_players);
+    int rn;
+
+    Player p;
+    for (int i=0; i<n_players; i++) {
+        rn = dist(gen);
+        p = Player(i, "p"+to_string(i), rn, i);
+        mm->insert(p);
+    }
+
+    return mm;
+}
+
+bool get_tempo_exec(int n_players, double* t_insert, double* t_merge) {
+    if (n_players < 1 || t_insert == nullptr || t_merge == nullptr)
+        return false;
+
+    random_device rd;
+
+    Matchmaking* mm = gerar_jogo_aleatorio(n_players, rd());
+    auto start = chrono::steady_clock::now();
+    mm->sortByScoreInsertion();
+    auto end = chrono::steady_clock::now();
+
+    chrono::duration<double> elapsed = end - start;
+    *t_insert = elapsed.count();
+    delete mm;
+
+    mm = gerar_jogo_aleatorio(n_players, rd());
+    start = chrono::steady_clock::now();
+    mm->sortByScoreMerge();
+    end = chrono::steady_clock::now();
+
+    elapsed = end - start;
+    *t_merge = elapsed.count();
+
+    return true;
+}
+
+void comparar_funcs(int amostras) {
+    int MAX = Matchmaking::MAX_PLAYERS;
+    int n_players;
+    double t_insert, t_merge;
+    bool sucesso;
+    cout << "n_players,func,t_exec" << endl;
+
+    while (amostras--) {
+        sucesso = true;
+        n_players = MAX;
+        while(sucesso) {
+            sucesso = get_tempo_exec(n_players, &t_insert, &t_merge);
+            if (!sucesso)   continue;
+
+            cout << n_players << ",insert," << t_insert << endl;
+            cout << n_players << ",merge," << t_merge << endl;
+
+            n_players = n_players * 2 / 3;
+        }
+    }
+}
+
+int main(){
+    int n_players = 10;
+    run_tests(n_players);
+
+    // rodar apenas essa parte com `.\src\a >> src\out.csv` para adicionar testes ao arquivo de dados
+    // int amostras = 10;
+    // comparar_funcs(amostras);
 
     return 0;
 }
